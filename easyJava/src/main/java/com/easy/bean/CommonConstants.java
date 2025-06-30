@@ -54,7 +54,6 @@ public class CommonConstants {
     public static String BEAN_DATA_DESERIALIZATION_FORMAT; // 反序列化的格式
     public static String BEAN_DATA_DESERIALIZATION_FORMAT_CLASS; // 反序列化的注解
 
-
     static {
         IGNORE_TABLE_PREFIX = Boolean.valueOf(PropertiesUtils.getString("ignore.table.prefix"));
         SUFFIX_BEAN_PARAM = StringManipulationTool.upperCaseFirstLetter(PropertiesUtils.getString("suffix.bean.param"));
@@ -94,7 +93,7 @@ public class CommonConstants {
     }
 
     public static void main(String[] args) {
-        System.out.println(PATH_BASE_RESOURCES);
+        System.out.println(PACKAGE_PO);
         System.out.println(PATH_BASE_RESOURCES_MAPPERS_XML);
     }
 }

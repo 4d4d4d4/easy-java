@@ -27,6 +27,11 @@
       <scope>runtime</scope>
       <version>8.0.31</version>
     </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.33</version>
+    </dependency>
 
     <dependency>
       <groupId>org.mybatis.spring.boot</groupId>

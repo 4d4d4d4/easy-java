@@ -1,0 +1,46 @@
+package com.easyjava.utils;
+
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @Classname DateUtil
+ * @Description 时间格式化工具类
+ */
+public class DateUtil {
+    private static final Object lockObj = new Object();
+    private static Map<String, ThreadLocal<SimpleDateFormat>> sdfMap = new HashMap<>();
+
+    private static SimpleDateFormat getSdf(final String pattern){
+        ThreadLocal<SimpleDateFormat> t1 = sdfMap.get(pattern);
+        if(t1 == null){
+            synchronized (lockObj){
+                t1 = new ThreadLocal<SimpleDateFormat>(){
+                    @Override
+                    protected SimpleDateFormat initialValue() {
+                        return new SimpleDateFormat(pattern);
+                    }
+                };
+                sdfMap.put(pattern, t1);
+            }
+        }
+        return t1.get();
+    }
+
+    public static String format(Date date, String parent){
+        return getSdf(parent).format(date);
+    }
+
+    public static Date parse(String dateStr, String parent){
+        try {
+            return getSdf(parent).parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new Date();
+        }
+    }
+}

@@ -15,8 +15,8 @@ public enum TypeConversionEnum {
     SQL_DATE_TIME(new String[]{"datetime", "timestamp"}, "Date", "DateTime类型"),
     SQL_DATE(new String[]{"date"}, "Date", "Date类型"),
     SQL_DECIMAL(new String[]{"decimal", "double", "float"},"BigDecimal", "Double类型"),
-    SQL_STRING_TYPE(new String[]{"char", "varchar", "text", "mediumtext", "longtext"}, "String", "String类型"),
-    SQL_INTEGER_TYPE(new String[]{"int", "tinyint"}, "Integer", "Integer类型"),
+    SQL_STRING_TYPE(new String[]{"char", "varchar", "text", "mediumtext", "longtext","json","blob"}, "String", "String类型"),
+    SQL_INTEGER_TYPE(new String[]{"int", "tinyint","smallint"}, "Integer", "Integer类型"),
     SQL_LONG_TYPE(new String[]{"bigint"}, "Long", "Long类型");
     ;
     public static final Logger logger = LoggerFactory.getLogger(TypeConversionEnum.class);
@@ -53,7 +53,7 @@ public enum TypeConversionEnum {
                 return t;
             }
         }
-        logger.error("对该{}类型，未找到对应的JAVA类型", sqlType);
+        logger.error("对该{}类型，未找到对应的JAVA类型 ： ", sqlType);
         throw new RuntimeException("未知SQL参数类型");
     }
 }

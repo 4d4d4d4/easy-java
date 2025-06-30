@@ -68,5 +68,24 @@ public class BuildBase {
         build(headerInfoList, "BaseMapper", CommonConstants.PATH_MAPPERS);
         logger.info("Mapper基础类{}，以生成在{}", "BaseMapper", CommonConstants.PATH_MAPPERS);
 
+        // 构建pageSize枚举类
+        headerInfoList.clear();
+        headerInfoList.add("package " + CommonConstants.PACKAGE_ENUMS + ";");
+        build(headerInfoList, "PageSize", CommonConstants.PATH_ENUMS);
+        logger.info("PageSize枚举类{}，以生成在{}", "PageSize", CommonConstants.PATH_ENUMS);
+
+        // 生成SimplePage
+        headerInfoList.clear();
+        headerInfoList.add("package " + CommonConstants.PACKAGE_QUERY + ";");
+        headerInfoList.add("import " + CommonConstants.PACKAGE_ENUMS + ".PageSize" + ";");
+        build(headerInfoList, "SimplePage", CommonConstants.PATH_QUERY);
+        logger.info("Query分页类{}，以生成在{}", "SimplePage", CommonConstants.PATH_QUERY);
+
+        //生成BaseQuery
+        headerInfoList.clear();
+        headerInfoList.add("package " + CommonConstants.PACKAGE_QUERY + ";");
+        build(headerInfoList, "BaseQuery", CommonConstants.PATH_QUERY);
+        logger.info("Query基础类{}，以生成在{}", "BaseQuery", CommonConstants.PATH_QUERY);
+
     }
 }

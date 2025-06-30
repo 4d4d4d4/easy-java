@@ -42,7 +42,7 @@ public class BuildQuery {
             outw = new OutputStreamWriter(out, StandardCharsets.UTF_8);
             // 文件缓冲字符输出流
             bw = new BufferedWriter(outw);
-            //
+            // 写入包名
             bw.write(String.format("package %s;", CommonConstants.PACKAGE_QUERY));
             bw.newLine();
             bw.newLine();
@@ -54,51 +54,54 @@ public class BuildQuery {
                 bw.newLine();
                 bw.newLine();
             }
-
             // 构建类注释
             BuildComment.createdClassComment(bw, tableInfo.getComment() + "查询对象");
-            bw.write("public class " + StringManipulationTool.upperCaseFirstLetter(className) + " {");
+            bw.write("public class " + StringManipulationTool.upperCaseFirstLetter(className) + " extends BaseQuery" + " {");
             bw.newLine();
             List<FieldInfo> tempList = new ArrayList<>(tableInfo.getFieldList());
-            // 写入属性
-            for(FieldInfo field : tempList){
+            List<FieldInfo> extendList = new ArrayList<>();
+            // 写入属性 以及 扩展属性
+            for(FieldInfo field : tableInfo.getFieldList()){
                 BuildComment.createdFieldComment(bw, field.getComment());
-                bw.write("    private " + field.getJavaType() + " " + field.getPropertyName() + ";");
+                bw.write("\tprivate " + field.getJavaType() + " " + field.getPropertyName() + ";");
                 bw.newLine();
                 bw.newLine();
                 if(field.getJavaType().equals("String")){
                     String propertyName = field.getPropertyName() + CommonConstants.SUFFIX_BEAN_QUERY_FUZZY;
-                    bw.write("    private " + field.getJavaType() + " " + propertyName  + ";");
+                    bw.write("\tprivate " + field.getJavaType() + " " + propertyName  + ";");
                     bw.newLine();
                     bw.newLine();
 
                     FieldInfo fuzzyField = new FieldInfo();
                     fuzzyField.setJavaType(field.getJavaType());
                     fuzzyField.setPropertyName(propertyName);
-                    tableInfo.getFieldList().add(fuzzyField);
+                    tempList.add(fuzzyField);
+                    extendList.add(fuzzyField);
                 }
                 if(field.getJavaType().equals("Date")){
-                    bw.write("    private String " + field.getPropertyName() + CommonConstants.SUFFIX_BEAN_QUERY_TIME_START + ";");
+                    bw.write("\tprivate String " + field.getPropertyName() + CommonConstants.SUFFIX_BEAN_QUERY_TIME_START + ";");
                     bw.newLine();
-
-                    bw.write("    private String " + field.getPropertyName() + CommonConstants.SUFFIX_BEAN_QUERY_TIME_END + ";");
+                    bw.write("\tprivate String " + field.getPropertyName() + CommonConstants.SUFFIX_BEAN_QUERY_TIME_END + ";");
                     bw.newLine();
                     bw.newLine();
-
                     FieldInfo timeStartField = new FieldInfo();
                     timeStartField.setJavaType("String");
                     timeStartField.setPropertyName(field.getPropertyName() + CommonConstants.SUFFIX_BEAN_QUERY_TIME_START);
-                    tableInfo.getFieldList().add(timeStartField);
+                    tempList.add(timeStartField);
+                    extendList.add(timeStartField);
 
                     FieldInfo timeEndField = new FieldInfo();
                     timeEndField.setJavaType("String");
                     timeEndField.setPropertyName(field.getPropertyName() + CommonConstants.SUFFIX_BEAN_QUERY_TIME_END);
-                    tableInfo.getFieldList().add(timeEndField);
+                    tempList.add(timeEndField);
+                    extendList.add(timeEndField);
                 }
             }
 
+//            tableInfo.setExtendFieldList(extendList);
+
             // String类型的参数
-            for(FieldInfo f : tableInfo.getFieldList()){
+            for(FieldInfo f : tempList){
                 String tempField = StringManipulationTool.upperCaseFirstLetter(f.getPropertyName());
 
                 bw.write("\tpublic void set" + tempField + "(" + f.getJavaType() + " " + f.getPropertyName() + ") {");

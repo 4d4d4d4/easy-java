@@ -23,6 +23,8 @@ public class TableInfo {
     private List<FieldInfo> fieldList;
     // 唯一索引集合
     private Map<String, List<FieldInfo>> keyIndexMap = new LinkedHashMap<>();
+    // 扩展属性集合
+    private List<FieldInfo> extendFieldList;
     // 是否有date类型
     private boolean haveDate = false;
     // 是否有时间类型
@@ -92,6 +94,14 @@ public class TableInfo {
 
     public void setHaveDateTime(boolean haveDateTime) {
         this.haveDateTime = haveDateTime;
+    }
+
+    public List<FieldInfo> getExtendFieldList() {
+        return extendFieldList;
+    }
+
+    public void setExtendFieldList(List<FieldInfo> extendFieldList) {
+        this.extendFieldList = extendFieldList;
     }
 
     public boolean isHaveBigDecimal() {
